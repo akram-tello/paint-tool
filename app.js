@@ -1,4 +1,5 @@
 const canvas = document.getElementById("jsCanvas");
+const colors = document.getElementsByClassName ("jsColor");
 const ctx = canvas.getContext("2d");
 
 //config
@@ -40,4 +41,12 @@ function onMouseMove(event) {
     ctx.lineTo(x, y);
     ctx.stroke();
   }
+}
+
+Array.from(colors).forEach(color => color.addEventListener("click", handleColorClick))
+console.log(Array.from(colors))
+
+function handleColorClick (e){
+  const color = e.target.style.backgroundColor;
+  ctx.strokeStyle = color;
 }
