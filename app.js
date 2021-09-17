@@ -1,5 +1,6 @@
 const canvas = document.getElementById("jsCanvas");
 const colors = document.getElementsByClassName ("jsColor");
+const range = document.getElementById("jsRange");
 const ctx = canvas.getContext("2d");
 
 //config
@@ -49,4 +50,13 @@ console.log(Array.from(colors))
 function handleColorClick (e){
   const color = e.target.style.backgroundColor;
   ctx.strokeStyle = color;
+}
+
+if (range) {
+  range.addEventListener("input", handleRangeChange);
+}
+
+function handleRangeChange (){
+  const sizeBrush = event.target.value;
+  ctx.lineWidth = sizeBrush;
 }
