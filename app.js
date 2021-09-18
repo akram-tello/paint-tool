@@ -1,7 +1,10 @@
 const canvas = document.getElementById("jsCanvas");
 const colors = document.getElementsByClassName ("jsColor");
 const range = document.getElementById("jsRange");
+const saveBtn = document.getElementById("jsSave");
+const imageLoader = document.getElementById('imageLoader');
 const ctx = canvas.getContext("2d");
+
 
 //config
 const INITIAL_COLOR = "#2c2c2c";
@@ -14,15 +17,17 @@ ctx.strokeStyle = INITIAL_COLOR;
 ctx.fillStyle = INITIAL_COLOR;
 ctx.lineWidth = 2.5;
 
+
 if (canvas) {
   canvas.addEventListener("mousemove", onMouseMove);
   canvas.addEventListener("mousedown", startPainting);
   canvas.addEventListener("mouseup", stopPainting);
   canvas.addEventListener("mouseleave", stopPainting);
+  canvas.addEventListener("contextmenu", handleCM);
+  imageLoader.addEventListener('change', handleImage, false);
 }
 
 let painting = false;
-let filling = false;
 
 function stopPainting() {
   painting = false;
@@ -59,4 +64,35 @@ if (range) {
 function handleRangeChange (){
   const sizeBrush = event.target.value;
   ctx.lineWidth = sizeBrush;
+}
+
+if (saveBtn) {
+  saveBtn.addEventListener("click", handleSaveClick);
+}
+
+function handleCM(e) {
+console.log(e)
+e.preventDefault()
+}
+
+function handleSaveClick() {
+  const image = canvas.toDataURL();
+  const link = document.createElement("a");
+  link.href = image;
+  link.download = "Pandai[🎨]";
+  link.click();
+}
+
+function handleImage(e){
+    var reader = new FileReader();
+    reader.onload = function(event){
+        var img = new Image();
+        img.onload = function(){
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
+        }
+        img.src = event.target.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);     
 }
